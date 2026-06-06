@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="description" content="TanyaHukum — Platform edukasi hukum Indonesia berbasis AI. Bukan jasa konsultasi hukum.">
+<title>TanyaHukum — Edukasi Hukum Digital Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════ */
+:root{
+  --bg:#F0F2F8;--white:#FFF;--sf:#F7F8FC;
+  --bd:#E4E7EF;--bd2:#CBD2E0;
+  --blue:#2355E8;--bdk:#1A3FBB;--blt:#EEF2FF;--bmd:#DBEAFE;
+  --grn:#0A7A50;--glt:#EDFAF3;--gmd:#BBF7D0;
+  --org:#C45E00;--olt:#FFF4E6;
+  --red:#C0392B;--rlt:#FFF1F1;
+  --pur:#6D28D9;--plt:#F5F3FF;
+  --gld:#B45309;--gldt:#FFFBEB;
+  --t1:#0F172A;--t2:#334155;--t3:#64748B;--t4:#94A3B8;
+  --gem:#1A73E8;--glt2:#E8F0FE;
+  --cld:#D97706;--clt2:#FEF3C7;
+  --sh1:0 1px 4px rgba(0,0,0,.07);
+  --sh2:0 4px 20px rgba(0,0,0,.09);
+  --sh3:0 12px 40px rgba(0,0,0,.12);
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--rp:999px
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:var(--t1);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit}
+input,textarea,select{font-family:inherit}
+a{color:var(--blue)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px}
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4);opacity:.7}}
+@keyframes pb{from{width:0}to{width:100%}}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+.au{animation:fadeUp .45s ease both}
+.au1{animation:fadeUp .45s .07s ease both}
+.au2{animation:fadeUp .45s .14s ease both}
+.au3{animation:fadeUp .45s .21s ease both}
+.ci{animation:cardIn .4s ease both}
+.ci1{animation:cardIn .4s .08s ease both}
+.ci2{animation:cardIn .4s .16s ease both}
+.ci3{animation:cardIn .4s .24s ease both}
+
+/* ═══════════════════════════════════════
+   DISCLAIMER MODAL
+═══════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:overlayIn .3s ease}
+.overlay.hidden{display:none}
+.disc-modal{
+  background:var(--white);border-radius:24px 24px 0 0;
+  width:100%;max-width:640px;
+  max-height:90vh;display:flex;flex-direction:column;
+  animation:modalIn .4s ease
+}
+@media(min-height:700px){.disc-modal{border-radius:20px;margin:20px;max-height:80vh}}
+.dm-head{padding:20px 22px 0;flex-shrink:0}
+.dm-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.dm-title{font-size:17px;font-weight:800;color:var(--t1)}
+.dm-sub{font-size:12px;color:var(--t3);margin-top:2px}
+.dm-scroll{flex:1;overflow-y:auto;padding:0 22px}
+.dm-section{margin-bottom:16px}
+.dm-section-title{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.dm-text{font-size:13px;color:var(--t2);line-height:1.65}
+.dm-not-list,.dm-is-list{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.dm-not-list li{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--t2);line-height:1.5}
+.dm-not-list li::before{content:'❌';flex-shrink:0;font-size:12px}
+.dm-is-list li{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--t2);line-height:1.5}
+.dm-is-list li::before{content:'✅';flex-shrink:0;font-size:12px}
+.dm-law-box{background:var(--blt);border:1px solid rgba(35,85,232,.15);border-radius:var(--r8);padding:10px 12px;font-size:11px;color:var(--bdk);line-height:1.65}
+.dm-foot{padding:16px 22px;flex-shrink:0;border-top:1px solid var(--bd)}
+.dm-agree-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer}
+.dm-checkbox{width:20px;height:20px;border-radius:5px;border:2px solid var(--bd2);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.dm-checkbox.checked{background:var(--blue);border-color:var(--blue)}
+.dm-agree-lbl{font-size:13px;color:var(--t2);line-height:1.5;user-select:none}
+.dm-agree-lbl strong{color:var(--t1)}
+.btn-disc-ok{width:100%;padding:14px;border-radius:var(--r12);border:none;background:var(--bd2);color:var(--t3);font-size:14px;font-weight:700;transition:all .2s;cursor:not-allowed}
+.btn-disc-ok.ready{background:linear-gradient(135deg,var(--blue),var(--bdk));color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(35,85,232,.3)}
+.btn-disc-ok.ready:hover{transform:translateY(-1px)}
+
+/* ═══════════════════════════════════════
+   SCREENS
+═══════════════════════════════════════ */
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex}
+
+/* ═══════════════════════════════════════
+   ① LOGIN
+═══════════════════════════════════════ */
+#scr-login{flex-direction:column;align-items:center;justify-content:center;padding:24px;min-height:100vh;overflow-y:auto;background:linear-gradient(160deg,#EEF2FF 0%,#F0F2F8 50%,#EDFAF3 100%)}
+.lcard{background:var(--white);border:1.5px solid var(--bd);border-radius:24px;box-shadow:var(--sh3);padding:36px 32px;width:100%;max-width:420px}
+@media(max-width:480px){.lcard{padding:24px 18px}}
+.ltop{text-align:center;margin-bottom:22px}
+.lfeats{display:flex;flex-direction:column;gap:7px;margin-bottom:20px}
+.lf{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r12);font-size:13px;color:var(--t2)}
+.lf-ico{font-size:16px;flex-shrink:0}
+.secure-note{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;background:var(--glt);border:1.5px solid rgba(10,122,80,.2);border-radius:var(--r12);font-size:12px;color:#065F46;line-height:1.6;margin-bottom:14px}
+.fg{margin-bottom:13px}
+.flbl{display:block;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.finp{width:100%;padding:12px 14px;border:1.5px solid var(--bd);border-radius:var(--r12);font-size:14px;color:var(--t1);background:var(--white);outline:none;transition:all .2s}
+.finp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(35,85,232,.1)}
+.finp::placeholder{color:var(--t4)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:5px}
+.popt{padding:10px 6px;border-radius:var(--r12);border:2px solid var(--bd);font-size:11px;font-weight:700;text-align:center;cursor:pointer;background:var(--white);transition:all .18s}
+.popt.sf{border-color:var(--t3);background:#F1F5F9;color:var(--t2)}
+.popt.ss{border-color:var(--blue);background:var(--blt);color:var(--blue)}
+.popt.sp{border-color:var(--pur);background:var(--plt);color:var(--pur)}
+.pp{font-size:13px;font-weight:800;margin-top:2px}
+.pl{font-size:10px;opacity:.8;margin-top:1px}
+.btn-login{width:100%;padding:15px;border-radius:var(--r16);border:none;background:linear-gradient(135deg,var(--blue),var(--bdk));color:#fff;font-size:15px;font-weight:800;letter-spacing:.02em;box-shadow:0 4px 16px rgba(35,85,232,.35);transition:all .2s;margin-top:4px}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(35,85,232,.4)}
+.l-disc-link{text-align:center;margin-top:10px;font-size:11px;color:var(--t4)}
+.l-disc-link a{color:var(--blue);font-weight:600}
+
+/* ═══════════════════════════════════════
+   MAIN SHELL
+═══════════════════════════════════════ */
+#scr-main{flex-direction:column;height:100vh;max-width:760px;margin:0 auto;background:var(--bg)}
+.tnav{background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 16px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:60}
+.nbrand{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--t1)}
+.nbrand span{color:var(--blue)}
+.nlive{width:7px;height:7px;border-radius:50%;background:var(--grn);display:inline-block;margin-left:3px;margin-bottom:8px;animation:pulse 2.5s infinite}
+.nright{display:flex;align-items:center;gap:7px}
+.mpill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--rp);font-size:11px;font-weight:700;border:1px solid}
+.mp-s{background:linear-gradient(90deg,var(--glt2),var(--clt2));border-color:var(--bd2);color:var(--t2)}
+.mp-g{background:var(--glt2);border-color:rgba(26,115,232,.25);color:var(--gem)}
+.qpill{padding:4px 10px;border-radius:var(--rp);font-size:11px;font-weight:700;border:1px solid}
+.qp-ok{background:var(--glt);border-color:rgba(10,122,80,.2);color:var(--grn)}
+.qp-low{background:var(--olt);border-color:rgba(196,94,0,.2);color:var(--org)}
+.qp-out{background:var(--rlt);border-color:rgba(192,57,43,.2);color:var(--red)}
+.carea{flex:1;overflow:hidden;position:relative}
+.pane{display:none;height:100%;overflow-y:auto}
+.pane.active{display:block}
+#pane-tanya.active{display:flex;flex-direction:column}
+.btabs{display:flex;background:rgba(255,255,255,.96);border-top:1px solid var(--bd);flex-shrink:0;backdrop-filter:blur(16px)}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 11px;border:none;background:none;font-size:10px;font-weight:600;color:var(--t4);letter-spacing:.02em;transition:all .18s;position:relative}
+.btab.active{color:var(--blue)}
+.btab.active::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2.5px;background:var(--blue);border-radius:0 0 4px 4px}
+.btab-ico{font-size:19px;line-height:1}
+.btab-dot{position:absolute;top:6px;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--white);display:none}
+.btab-dot.show{display:block}
+
+/* ═══════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════ */
+.dp{padding:16px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--bdk));border-radius:20px;padding:20px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden}
+.hero::after{content:'⚖';position:absolute;right:-10px;bottom:-14px;font-size:96px;opacity:.09;pointer-events:none;line-height:1}
+.h-hi{font-size:12px;font-weight:500;opacity:.8;margin-bottom:3px}
+.h-name{font-size:21px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
+.h-pills{display:flex;gap:7px;flex-wrap:wrap}
+.h-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:var(--rp);padding:4px 11px;font-size:11px;font-weight:700}
+.qcard{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);padding:14px 16px;margin-bottom:14px;box-shadow:var(--sh1)}
+.qcr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.qcl{font-size:13px;font-weight:600;color:var(--t2)}
+.qcn{font-size:22px;font-weight:800;color:var(--t1)}
+.qcd{font-size:13px;color:var(--t3)}
+.qtrack{background:var(--bd);border-radius:var(--rp);height:7px;overflow:hidden;margin-bottom:7px}
+.qfill{height:100%;border-radius:var(--rp);transition:width .6s ease;background:linear-gradient(90deg,var(--blue),#60A5FA)}
+.qfill.warn{background:linear-gradient(90deg,var(--org),#FCD34D)}
+.qfill.full{background:linear-gradient(90deg,var(--red),#FC8181)}
+.qsub{font-size:11px;color:var(--t4)}
+.slbl{font-size:11px;font-weight:700;color:var(--t4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fcard{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);padding:14px;cursor:pointer;transition:all .22s;box-shadow:var(--sh1)}
+.fcard:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--bd2)}
+.fc-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:10px}
+.ib{background:var(--blt);border:1.5px solid rgba(35,85,232,.12)}
+.ig{background:var(--glt);border:1.5px solid rgba(10,122,80,.12)}
+.io{background:var(--olt);border:1.5px solid rgba(196,94,0,.12)}
+.ip{background:var(--plt);border:1.5px solid rgba(109,40,217,.12)}
+.fc-nm{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.fc-ds{font-size:11px;color:var(--t3);line-height:1.5}
+.rcard{background:linear-gradient(135deg,var(--blt),var(--glt));border:1.5px solid rgba(35,85,232,.15);border-radius:var(--r16);padding:14px 16px;margin-bottom:14px}
+.rc-t{font-size:14px;font-weight:800;margin-bottom:4px}
+.rc-d{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:12px}
+.rc-row{display:flex;gap:8px;align-items:center}
+.rcm{flex:1;padding:9px;border-radius:var(--r12);font-size:11px;font-weight:700;text-align:center;border:1.5px solid}
+.rcm-g{background:var(--glt2);border-color:rgba(26,115,232,.3);color:var(--gem)}
+.rcm-c{background:var(--clt2);border-color:rgba(217,119,6,.3);color:var(--cld)}
+.rcm-sub{font-size:10px;font-weight:500;margin-top:2px;opacity:.8}
+.upcard{background:linear-gradient(135deg,var(--plt),var(--blt));border:1.5px solid rgba(109,40,217,.2);border-radius:var(--r16);padding:14px 16px;margin-bottom:16px}
+.up-t{font-size:14px;font-weight:800;color:var(--pur);margin-bottom:4px}
+.up-d{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:12px}
+.up-row{display:flex;gap:8px}
+.btn-up{flex:1;padding:10px;border-radius:var(--r12);border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.bus{background:var(--blue);color:#fff}
+.bup{background:var(--pur);color:#fff}
+
+/* ═══════════════════════════════════════
+   TANYA HUKUM (CHAT)
+═══════════════════════════════════════ */
+.cmsgs{flex:1;overflow-y:auto;padding:14px 14px 200px;display:flex;flex-direction:column;gap:14px}
+.cempty{display:flex;flex-direction:column;align-items:center;padding:24px 16px 12px;text-align:center}
+.ce-ico{font-size:42px;margin-bottom:10px}
+.ce-t{font-size:17px;font-weight:800;margin-bottom:5px}
+.ce-s{font-size:13px;color:var(--t3);max-width:320px;line-height:1.55;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.chip{padding:8px 14px;border-radius:var(--rp);background:var(--white);border:1.5px solid var(--bd);font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .18s}
+.chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blt);transform:translateY(-1px)}
+.msg-u{display:flex;justify-content:flex-end;margin-bottom:2px}
+.bbl-u{background:linear-gradient(135deg,var(--blue),var(--bdk));color:#fff;padding:12px 16px;border-radius:18px 18px 4px 18px;max-width:82%;font-size:14px;line-height:1.55;box-shadow:0 3px 12px rgba(35,85,232,.22)}
+.bbl-u img{max-width:160px;border-radius:10px;display:block;margin-bottom:6px}
+.msg-ai{display:flex;gap:10px;align-items:flex-start}
+.ai-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--bdk));display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 8px rgba(35,85,232,.25);margin-top:2px}
+.ai-wrap{flex:1;display:flex;flex-direction:column;gap:9px}
+.mtag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:var(--rp);font-size:10px;font-weight:700;border:1px solid;width:fit-content;margin-bottom:2px}
+.mt-g{background:var(--glt2);border-color:rgba(26,115,232,.25);color:var(--gem)}
+.mt-c{background:var(--clt2);border-color:rgba(217,119,6,.3);color:var(--cld)}
+.thinking{display:flex;gap:10px;align-items:center}
+.th-bbl{display:flex;gap:5px;padding:12px 16px;background:var(--white);border:1.5px solid var(--bd);border-radius:18px 18px 18px 4px;box-shadow:var(--sh1)}
+.th-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);opacity:.4;animation:bounce .9s ease-in-out infinite}
+.th-dot:nth-child(2){animation-delay:.15s}
+.th-dot:nth-child(3){animation-delay:.30s}
+.th-s{font-size:12px;color:var(--t3)}
+.pbar{height:3px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:6px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--grn));border-radius:3px;animation:pb 4s ease-in-out forwards}
+
+/* Result cards */
+.rstack{display:flex;flex-direction:column;gap:10px}
+.rcard2{background:var(--white);border:1.5px solid var(--bd);border-radius:18px;overflow:hidden;box-shadow:var(--sh1)}
+.rh{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1.5px solid}
+.rh.hb{background:linear-gradient(90deg,var(--blt),rgba(219,234,254,.3));border-color:rgba(35,85,232,.12)}
+.rh.hg{background:linear-gradient(90deg,var(--glt),rgba(187,247,208,.3));border-color:rgba(10,122,80,.12)}
+.rh.ho{background:linear-gradient(90deg,var(--olt),rgba(254,215,170,.3));border-color:rgba(196,94,0,.12)}
+.rh-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ri-b{background:rgba(35,85,232,.1);border:1.5px solid rgba(35,85,232,.15)}
+.ri-g{background:rgba(10,122,80,.1);border:1.5px solid rgba(10,122,80,.15)}
+.ri-o{background:rgba(196,94,0,.1);border:1.5px solid rgba(196,94,0,.15)}
+.rh-m{}
+.rh-n{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.rn-b{color:var(--blue)}.rn-g{color:var(--grn)}.rn-o{color:var(--org)}
+.rh-t{font-size:14px;font-weight:700;color:var(--t1)}
+.rb{padding:14px 16px}
+.psl{display:flex;flex-direction:column;gap:7px}
+.psi{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r8)}
+.pst{font-size:10px;font-weight:700;color:var(--blue);background:var(--blt);border:1px solid rgba(35,85,232,.2);border-radius:6px;padding:2px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.psn{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.psd{font-size:12px;color:var(--t2);line-height:1.5}
+.hkl{display:flex;flex-direction:column;gap:7px}
+.hki{display:flex;gap:10px;padding:9px 11px;background:var(--glt);border:1px solid rgba(10,122,80,.12);border-radius:var(--r8);align-items:flex-start}
+.hkc{width:20px;height:20px;border-radius:50%;background:var(--grn);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0;margin-top:1px}
+.hkt{font-size:13px;color:var(--t2);line-height:1.5}
+.hkt strong{color:var(--t1)}
+.stl{display:flex;flex-direction:column;gap:0}
+.sti{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}
+.sti:last-child{border-bottom:none;padding-bottom:0}
+.stn{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--org),#EA580C);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 2px 6px rgba(196,94,0,.3)}
+.stt{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.std{font-size:12px;color:var(--t2);line-height:1.55}
+.stw{font-size:11px;color:var(--org);font-weight:600;margin-top:4px}
+.warn-b{display:flex;gap:8px;padding:11px 13px;background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:var(--r12);font-size:12px;color:#92400E;line-height:1.55}
+.disc-b{display:flex;gap:8px;padding:11px 13px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:var(--r12);font-size:12px;color:#0369A1;line-height:1.55}
+.edu-b{display:flex;gap:8px;padding:10px 13px;background:var(--rlt);border:1.5px solid rgba(192,57,43,.2);border-radius:var(--r12);font-size:11px;color:var(--red);line-height:1.5}
+.sbar{display:flex;gap:7px;padding:11px 13px;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r12);align-items:center}
+.slbl2{font-size:11px;font-weight:700;color:var(--t3);flex-shrink:0}
+.sbtn{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--r8);border:1.5px solid;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--white)}
+.sb-w{border-color:rgba(37,211,102,.4);color:#128C7E}
+.sb-w:hover{background:rgba(37,211,102,.08)}
+.sb-c{border-color:var(--bd2);color:var(--t2)}
+.sb-c:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Input bar */
+.cbar{position:fixed;bottom:52px;left:0;right:0;max-width:760px;margin:0 auto;padding:7px 12px 10px;background:linear-gradient(to top,var(--bg) 55%,transparent);z-index:40}
+.istrip{display:none;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r12) var(--r12) 0 0;border-bottom:none;padding:8px 12px}
+.ist-img{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid var(--bd);flex-shrink:0}
+.ist-l{flex:1;font-size:12px;color:var(--t3)}
+.ist-rm{background:none;border:none;color:var(--t4);font-size:17px;padding:3px;cursor:pointer;transition:color .15s}
+.ist-rm:hover{color:var(--red)}
+.ibox{background:var(--white);border:1.5px solid var(--bd);border-radius:18px;box-shadow:var(--sh3);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.ibox:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(35,85,232,.1),var(--sh2)}
+.ita{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:var(--t1);padding:13px 16px 6px;resize:none;min-height:50px;max-height:180px;line-height:1.55}
+.ita::placeholder{color:var(--t4)}
+.itb{display:flex;align-items:center;padding:5px 10px 8px;gap:3px}
+.tl{display:flex;gap:2px;flex:1}
+.icb{width:36px;height:36px;border-radius:50%;border:none;background:none;font-size:17px;color:var(--t3);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icb:hover{background:var(--bg);color:var(--t1);transform:scale(1.1)}
+.icb.rec{color:var(--red);background:var(--rlt)}
+.sndb{width:38px;height:38px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--blue),var(--bdk));color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(35,85,232,.3);transition:all .18s;flex-shrink:0}
+.sndb:hover{transform:scale(1.08)}
+.sndb:disabled{background:var(--bd);box-shadow:none;transform:none}
+
+/* ═══════════════════════════════════════
+   ANALISIS DOKUMEN
+═══════════════════════════════════════ */
+.pp2{padding:16px}
+.pg-t{font-size:18px;font-weight:800;margin-bottom:4px}
+.pg-s{font-size:13px;color:var(--t3);margin-bottom:18px;line-height:1.55}
+.uzone{border:2.5px dashed var(--bd2);border-radius:var(--r16);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--white);margin-bottom:14px}
+.uzone:hover{border-color:var(--blue);background:var(--blt)}
+.uzone.hf{border-color:var(--grn);background:var(--glt);border-style:solid}
+.uz-ico{font-size:34px;margin-bottom:8px}
+.uz-t{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.uz-s{font-size:12px;color:var(--t3)}
+.ordiv{display:flex;align-items:center;gap:10px;color:var(--t4);font-size:12px;font-weight:600;margin-bottom:12px}
+.ordiv::before,.ordiv::after{content:'';flex:1;height:1px;background:var(--bd)}
+.bta{width:100%;padding:13px 14px;border:1.5px solid var(--bd);border-radius:var(--r12);font-size:13px;color:var(--t1);background:var(--white);outline:none;resize:vertical;min-height:90px;line-height:1.6;transition:border-color .2s}
+.bta:focus{border-color:var(--blue)}
+.bta::placeholder{color:var(--t4)}
+.trow{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.tc2{padding:7px 13px;border-radius:var(--rp);border:1.5px solid var(--bd);font-size:12px;font-weight:600;color:var(--t2);background:var(--white);cursor:pointer;transition:all .18s}
+.tc2:hover,.tc2.sel{border-color:var(--blue);color:var(--blue);background:var(--blt)}
+.btn-grn{width:100%;padding:14px;border-radius:var(--r12);border:none;background:linear-gradient(135deg,var(--grn),#0A6642);color:#fff;font-size:14px;font-weight:700;box-shadow:0 3px 10px rgba(10,122,80,.3);transition:all .18s}
+.btn-grn:hover{transform:translateY(-1px)}
+.btn-grn:disabled{background:var(--bd);box-shadow:none;transform:none}
+.arst{margin-top:18px;display:flex;flex-direction:column;gap:10px;animation:fadeUp .4s ease}
+.arc{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);overflow:hidden;box-shadow:var(--sh1)}
+.arh{padding:11px 15px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;gap:8px}
+.arh-i{font-size:17px}
+.arh-l{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.arh-t{font-size:13px;font-weight:700;color:var(--t1)}
+.arb{padding:14px 15px;font-size:13px;color:var(--t2);line-height:1.65}
+.rki{display:flex;gap:8px;padding:8px 10px;border-radius:var(--r8);margin-bottom:6px;border:1px solid;align-items:flex-start}
+.rk-h{background:var(--rlt);border-color:rgba(192,57,43,.2)}
+.rk-m{background:var(--olt);border-color:rgba(196,94,0,.2)}
+.rk-l{background:var(--glt);border-color:rgba(10,122,80,.2)}
+.rkt{flex:1;font-size:12px;line-height:1.5}
+.rkt strong{display:block;font-size:13px;color:var(--t1);margin-bottom:2px}
+
+/* ═══════════════════════════════════════
+   BUAT DOKUMEN — CATEGORIES
+═══════════════════════════════════════ */
+.pp3{padding:16px}
+.cat-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.ctab{padding:7px 14px;border-radius:var(--rp);border:1.5px solid var(--bd);font-size:12px;font-weight:600;color:var(--t2);background:var(--white);cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.ctab:hover{border-color:var(--blue);color:var(--blue)}
+.ctab.act{background:var(--blue);border-color:var(--blue);color:#fff}
+.cat-section{margin-bottom:18px}
+.cat-title{font-size:11px;font-weight:800;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px;padding-left:2px;display:flex;align-items:center;gap:6px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tcard{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);padding:13px;cursor:pointer;transition:all .22s;box-shadow:var(--sh1)}
+.tcard:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--sh2)}
+.tc-ico{font-size:22px;margin-bottom:7px}
+.tc-nm{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.tc-ds{font-size:11px;color:var(--t3);line-height:1.45}
+.tc-tag{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:var(--rp);font-size:10px;font-weight:700;border:1px solid}
+.ttf{color:var(--grn);border-color:rgba(10,122,80,.3);background:var(--glt)}
+.ttp{color:var(--pur);border-color:rgba(109,40,217,.3);background:var(--plt)}
+.dform{display:none;flex-direction:column;gap:11px;animation:fadeUp .35s ease}
+.dform.open{display:flex}
+.dtop{background:var(--blt);border:1.5px solid rgba(35,85,232,.15);border-radius:var(--r12);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.dt-ico{font-size:22px}
+.dt-t{font-size:14px;font-weight:700;color:var(--bdk)}
+.dt-s{font-size:12px;color:var(--blue);margin-top:1px}
+.btn-bk{display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--bd);border-radius:var(--r8);padding:7px 12px;font-size:12px;font-weight:600;color:var(--t3);transition:all .18s}
+.btn-bk:hover{border-color:var(--t2);color:var(--t1)}
+.df-lbl{display:block;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.df-inp{width:100%;padding:11px 13px;border:1.5px solid var(--bd);border-radius:var(--r12);font-size:14px;color:var(--t1);background:var(--white);outline:none;transition:all .2s;resize:none}
+.df-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(35,85,232,.08)}
+.df-inp::placeholder{color:var(--t4)}
+.btn-gen{width:100%;padding:14px;border-radius:var(--r12);border:none;background:linear-gradient(135deg,var(--blue),var(--bdk));color:#fff;font-size:14px;font-weight:700;box-shadow:0 3px 12px rgba(35,85,232,.3);transition:all .2s}
+.btn-gen:hover{transform:translateY(-1px)}
+.btn-gen:disabled{background:var(--bd);box-shadow:none;transform:none}
+.genwrap{display:none;flex-direction:column;gap:11px;animation:fadeUp .4s ease}
+.genwrap.open{display:flex}
+.gen-ok{background:var(--glt);border:1.5px solid rgba(10,122,80,.2);border-radius:var(--r12);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.doc-out{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);padding:18px;font-size:12.5px;line-height:1.85;color:var(--t1);white-space:pre-wrap;box-shadow:var(--sh1);max-height:380px;overflow-y:auto;font-family:'Courier New',monospace}
+.dacts{display:flex;gap:8px;flex-wrap:wrap}
+.bout{flex:1;padding:11px;border-radius:var(--r12);font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;min-width:80px;text-align:center;border:1.5px solid}
+.bo-cp{border-color:var(--blue);background:var(--blt);color:var(--blue)}
+.bo-cp:hover{background:var(--blue);color:#fff}
+.bo-wa{border-color:rgba(37,211,102,.4);background:rgba(37,211,102,.06);color:#128C7E}
+.bo-wa:hover{background:rgba(37,211,102,.12)}
+.bo-rs{border-color:var(--bd);background:var(--white);color:var(--t2)}
+
+/* ═══════════════════════════════════════
+   RIWAYAT
+═══════════════════════════════════════ */
+.hhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hcnt{font-size:12px;color:var(--t3);font-weight:600}
+.btn-clr{background:none;border:1.5px solid rgba(192,57,43,.3);color:var(--red);border-radius:var(--r8);padding:6px 12px;font-size:12px;font-weight:700;transition:all .18s}
+.btn-clr:hover{background:var(--rlt)}
+.hi{background:var(--white);border:1.5px solid var(--bd);border-radius:var(--r16);padding:13px 14px;margin-bottom:9px;cursor:pointer;transition:all .2s;box-shadow:var(--sh1)}
+.hi:hover{border-color:var(--blue);box-shadow:var(--sh2)}
+.hi-row{display:flex;align-items:flex-start;gap:10px}
+.hi-ico{width:38px;height:38px;border-radius:11px;background:var(--blt);border:1.5px solid rgba(35,85,232,.12);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.hi-b{flex:1;overflow:hidden}
+.hi-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-m{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hi-tm{font-size:11px;color:var(--t4)}
+.hi-md{font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--rp);border:1px solid}
+.hm-g{background:var(--glt2);border-color:rgba(26,115,232,.2);color:var(--gem)}
+.hm-c{background:var(--clt2);border-color:rgba(217,119,6,.2);color:var(--cld)}
+.hi-pv{font-size:12px;color:var(--t3);margin-top:4px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hi-exp{margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);display:none}
+.hi-exp.open{display:block}
+.hi-sh{display:flex;gap:7px;margin-top:8px}
+
+/* Quota gate */
+.qgate{background:var(--rlt);border:1.5px solid rgba(192,57,43,.2);border-radius:var(--r16);padding:18px;text-align:center}
+.qg-ico{font-size:32px;margin-bottom:7px}
+.qg-t{font-size:15px;font-weight:800;color:var(--red);margin-bottom:6px}
+.qg-d{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:13px}
+.qg-row{display:flex;gap:8px;justify-content:center}
+.btn-qg{flex:1;max-width:150px;padding:10px;border-radius:var(--r12);border:none;font-size:13px;font-weight:700;cursor:pointer}
+.bqb{background:var(--blue);color:#fff}
+.bqp{background:var(--pur);color:#fff}
+
+/* Footer disclaimer */
+.footer-disc{padding:12px 16px;background:var(--sf);border-top:1px solid var(--bd);font-size:11px;color:var(--t4);text-align:center;line-height:1.65;flex-shrink:0}
+.footer-disc a{color:var(--blue);font-weight:600}
+
+/* Toast & spinner */
+#toast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-5px);background:rgba(15,23,42,.92);color:#fff;padding:9px 18px;border-radius:var(--rp);font-size:13px;font-weight:600;opacity:0;pointer-events:none;z-index:9999;transition:all .25s;white-space:nowrap;max-width:88vw;text-align:center;backdrop-filter:blur(8px)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spin{display:inline-block;width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
+.hidden{display:none!important}
+.mt8{margin-top:8px}.mt14{margin-top:14px}
+@media(max-width:480px){.fgrid,.tgrid{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<input type="file" id="fi-chat" accept="image/*" style="display:none" onchange="handleImg(event,'chat')">
+<input type="file" id="fi-doc"  accept="image/*,.pdf,.txt" style="display:none" onchange="handleImg(event,'doc')">
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════
+     DISCLAIMER MODAL
+════════════════════════════════════ -->
+<div class="overlay hidden" id="disc-overlay">
+  <div class="disc-modal">
+    <div class="dm-head">
+      <div class="dm-logo">
+        <svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="22" fill="url(#lg1)"/>
+          <defs><linearGradient id="lg1" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stop-color="#3B6FF8"/><stop offset="100%" stop-color="#1A3FBB"/></linearGradient></defs>
+          <rect x="21" y="11" width="2" height="20" fill="white" rx="1"/>
+          <rect x="14" y="31" width="16" height="2" fill="white" rx="1"/>
+          <rect x="9" y="11" width="26" height="2" fill="white" rx="1"/>
+          <line x1="13" y1="13" x2="13" y2="21" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="31" y1="13" x2="31" y2="19" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9 21 Q13 26 17 21" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+          <path d="M27 19 Q31 24 35 19" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+          <circle cx="22" cy="9" r="2.5" fill="white" opacity=".9"/>
+          <circle cx="22" cy="9" r="1.2" fill="#3B6FF8"/>
+        </svg>
+        <div><div class="dm-title">TanyaHukum</div><div class="dm-sub">Disclaimer & Syarat Penggunaan</div></div>
+      </div>
+    </div>
+    <div class="dm-scroll">
+
+      <div class="dm-section">
+        <div class="dm-section-title">⚠️ Status Platform Ini</div>
+        <div class="dm-text">TanyaHukum adalah <strong>platform edukasi dan informasi hukum</strong> berbasis Kecerdasan Buatan (AI). Platform ini <strong>BUKAN</strong> kantor hukum, bukan advokat, dan tidak menyediakan jasa konsultasi hukum profesional.</div>
+        <ul class="dm-not-list" style="margin-top:10px">
+          <li>Kantor hukum / law firm</li>
+          <li>Advokat berlisensi PERADI</li>
+          <li>Konsultan hukum resmi</li>
+          <li>Pengganti nasihat hukum profesional</li>
+          <li>Notaris / PPAT untuk akta resmi</li>
+        </ul>
+      </div>
+
+      <div class="dm-section">
+        <div class="dm-section-title">✅ Apa yang Kami Berikan</div>
+        <ul class="dm-is-list">
+          <li>Informasi hukum bersifat edukatif dan umum</li>
+          <li>Panduan awal memahami hak-hak hukum Anda</li>
+          <li>Draft dokumen sebagai <strong>referensi awal</strong>, bukan dokumen resmi</li>
+          <li>Arahan ke instansi atau profesi hukum yang tepat</li>
+        </ul>
+      </div>
+
+      <div class="dm-section">
+        <div class="dm-section-title">🤖 Keterbatasan AI</div>
+        <div class="dm-text">Jawaban AI dapat mengandung kesalahan atau tidak mencerminkan kondisi hukum terkini. <strong>Selalu verifikasi informasi</strong> dengan sumber hukum resmi atau advokat berlisensi sebelum mengambil tindakan hukum.</div>
+      </div>
+
+      <div class="dm-section">
+        <div class="dm-section-title">📜 Dokumen yang Dihasilkan</div>
+        <div class="dm-text">Semua dokumen yang dibuat AI bersifat <strong>draft referensi awal</strong>. Dokumen hukum yang mengikat secara hukum wajib:</div>
+        <ul class="dm-is-list" style="margin-top:8px">
+          <li>Ditinjau oleh advokat atau notaris berlisensi</li>
+          <li>Ditandatangani di atas materai sesuai ketentuan</li>
+          <li>Dibuat sesuai prosedur hukum yang berlaku</li>
+        </ul>
+      </div>
+
+      <div class="dm-section">
+        <div class="dm-section-title">🏛️ Untuk Kasus Serius</div>
+        <div class="dm-text">Hubungi profesional hukum berlisensi:</div>
+        <ul class="dm-is-list" style="margin-top:8px">
+          <li>Advokat PERADI untuk perwakilan hukum</li>
+          <li>LBH (Lembaga Bantuan Hukum) untuk bantuan gratis</li>
+          <li>Notaris / PPAT untuk akta dan dokumen resmi</li>
+          <li>BPSK untuk sengketa konsumen</li>
+          <li>Pengadilan Negeri / PHI untuk gugatan resmi</li>
+        </ul>
+      </div>
+
+      <div class="dm-section">
+        <div class="dm-law-box">
+          <strong>Landasan Hukum Platform Ini:</strong><br>
+          • UU No. 18/2003 tentang Advokat — Platform ini tidak menjalankan praktik advokat<br>
+          • UU No. 27/2022 tentang Perlindungan Data Pribadi — Data Anda dilindungi<br>
+          • Platform ini beroperasi sebagai layanan informasi dan edukasi, bukan jasa hukum
+        </div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+    <div class="dm-foot">
+      <div class="dm-agree-row" onclick="toggleAgree()">
+        <div class="dm-checkbox" id="dm-check"></div>
+        <div class="dm-agree-lbl">Saya memahami bahwa TanyaHukum adalah <strong>platform edukasi</strong>, bukan jasa konsultasi hukum, dan tidak menggantikan advokat berlisensi.</div>
+      </div>
+      <button class="btn-disc-ok" id="btn-disc-ok" onclick="closeDisc()" disabled>Saya Mengerti & Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ① LOGIN
+════════════════════════════════════ -->
+<div class="screen active" id="scr-login">
+  <div class="lcard">
+
+    <!-- LOGO TanyaHukum -->
+    <div class="ltop au">
+      <svg width="56" height="56" viewBox="0 0 44 44" fill="none" style="margin:0 auto 12px;display:block">
+        <circle cx="22" cy="22" r="22" fill="url(#lg2)"/>
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stop-color="#3B6FF8"/><stop offset="100%" stop-color="#1A3FBB"/></linearGradient></defs>
+        <rect x="21" y="11" width="2" height="20" fill="white" rx="1"/>
+        <rect x="14" y="31" width="16" height="2" fill="white" rx="1"/>
+        <rect x="9" y="11" width="26" height="2" fill="white" rx="1"/>
+        <line x1="13" y1="13" x2="13" y2="21" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="31" y1="13" x2="31" y2="19" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9 21 Q13 26 17 21" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+        <path d="M27 19 Q31 24 35 19" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+        <circle cx="22" cy="9" r="2.5" fill="white" opacity=".9"/>
+        <circle cx="22" cy="9" r="1.2" fill="#3B6FF8"/>
+      </svg>
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px">Tanya<span style="color:var(--blue)">Hukum</span></div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.55">Platform Edukasi Hukum Indonesia<br><strong style="color:var(--t2)">Bukan Jasa Konsultasi Hukum</strong></div>
+    </div>
+
+    <div class="lfeats au1">
+      <div class="lf"><span class="lf-ico">💬</span>Tanya masalah hukum dengan bahasa sehari-hari</div>
+      <div class="lf"><span class="lf-ico">🔍</span>Analisis kontrak, surat & dokumen hukum</div>
+      <div class="lf"><span class="lf-ico">📝</span>18 template dokumen legal siap pakai</div>
+    </div>
+
+    <div class="secure-note au2">
+      <span style="font-size:18px;flex-shrink:0">🔒</span>
+      <span><strong>100% Aman</strong> — API key tidak pernah tersimpan di browser. Semua permintaan AI diproses server terenkripsi Vercel.</span>
+    </div>
+
+    <div class="fg au2">
+      <label class="flbl">Nama Anda</label>
+      <input class="finp" id="inp-name" type="text" placeholder="Contoh: Budi Santoso" autocomplete="name">
+    </div>
+
+    <div class="fg au3">
+      <label class="flbl">Pilih Paket</label>
+      <div class="pgrid">
+        <div class="popt sf" id="po-f" onclick="sp('free',this)">Gratis<div class="pp">Rp 0</div><div class="pl">3 tanya/hari</div></div>
+        <div class="popt" id="po-s" onclick="sp('starter',this)">Starter<div class="pp">Rp 79rb</div><div class="pl">10/hari ∞</div></div>
+        <div class="popt" id="po-p" onclick="sp('pro',this)">Pro ★<div class="pp">Rp 99rb/bln</div><div class="pl">Unlimited</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--t4);margin-top:5px">Demo mode — integrasi Midtrans/Xendit dapat ditambahkan.</p>
+    </div>
+
+    <button class="btn-login au3" onclick="doLogin()">Mulai Pakai TanyaHukum →</button>
+    <div class="l-disc-link"><a href="#" onclick="showDisc();return false">Baca Disclaimer & Syarat Penggunaan lengkap</a></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     MAIN SHELL
+════════════════════════════════════ -->
+<div class="screen" id="scr-main" style="flex-direction:column;height:100vh">
+
+  <nav class="tnav">
+    <a class="nbrand" href="#" onclick="goTab('dashboard');return false">
+      <svg width="26" height="26" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="22" fill="url(#lg3)"/>
+        <defs><linearGradient id="lg3" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stop-color="#3B6FF8"/><stop offset="100%" stop-color="#1A3FBB"/></linearGradient></defs>
+        <rect x="21" y="11" width="2" height="20" fill="white" rx="1"/>
+        <rect x="14" y="31" width="16" height="2" fill="white" rx="1"/>
+        <rect x="9" y="11" width="26" height="2" fill="white" rx="1"/>
+        <line x1="13" y1="13" x2="13" y2="21" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="31" y1="13" x2="31" y2="19" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9 21 Q13 26 17 21" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+        <path d="M27 19 Q31 24 35 19" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+        <circle cx="22" cy="9" r="2.5" fill="white" opacity=".9"/>
+        <circle cx="22" cy="9" r="1.2" fill="#3B6FF8"/>
+      </svg>
+      Tanya<span>Hukum</span><span class="nlive"></span>
+    </a>
+    <div class="nright">
+      <span class="mpill mp-s" id="nav-model">⚡ Smart AI</span>
+      <span class="qpill qp-ok" id="nav-quota">— tersisa</span>
+    </div>
+  </nav>
+
+  <div class="carea">
+
+    <!-- DASHBOARD -->
+    <div class="pane active" id="pane-dashboard">
+      <div class="dp">
+        <div class="hero au">
+          <div class="h-hi">Selamat datang,</div>
+          <div class="h-name" id="h-name">—</div>
+          <div class="h-pills">
+            <span class="h-pill" id="h-plan">⭐ Gratis</span>
+            <span class="h-pill">⚡ Smart Routing</span>
+            <span class="h-pill">🔒 Key Aman</span>
+          </div>
+        </div>
+
+        <div class="qcard au1">
+          <div class="qcr"><span class="qcl">Kuota Hari Ini</span><span><span class="qcn" id="qc-u">0</span><span class="qcd" id="qc-d"> / 3</span></span></div>
+          <div class="qtrack"><div class="qfill" id="qc-b" style="width:0"></div></div>
+          <p class="qsub">🕛 Reset otomatis setiap tengah malam</p>
+        </div>
+
+        <div class="rcard au2">
+          <div class="rc-t">⚡ Smart Routing Aktif</div>
+          <div class="rc-d">AI otomatis pilih model terbaik. API key aman di server — tidak pernah terekspos ke browser.</div>
+          <div class="rc-row">
+            <div class="rcm rcm-g">🟢 Gemini<div class="rcm-sub">Pertanyaan cepat</div><div class="rcm-sub" style="color:var(--grn);font-weight:700">GRATIS</div></div>
+            <span style="color:var(--t4);font-size:12px;font-weight:700;padding:0 4px">→</span>
+            <div class="rcm rcm-c">🔵 Claude<div class="rcm-sub">Analisis mendalam</div><div class="rcm-sub" style="color:var(--org);font-weight:700">Presisi Tinggi</div></div>
+          </div>
+        </div>
+
+        <p class="slbl au2">Fitur Utama</p>
+        <div class="fgrid au3">
+          <div class="fcard" onclick="goTab('tanya')"><div class="fc-ico ib">💬</div><div class="fc-nm">Tanya Hukum</div><div class="fc-ds">Ceritakan masalah, AI beri solusi langkah per langkah</div></div>
+          <div class="fcard" onclick="goTab('analisis')"><div class="fc-ico ig">🔍</div><div class="fc-nm">Analisis Dokumen</div><div class="fc-ds">Upload kontrak/surat, AI temukan risiko hukumnya</div></div>
+          <div class="fcard" onclick="goTab('buat')"><div class="fc-ico io">📝</div><div class="fc-nm">Buat Dokumen</div><div class="fc-ds">18 template legal — somasi, kontrak, gugatan & lebih</div></div>
+          <div class="fcard" onclick="goTab('riwayat')"><div class="fc-ico ip">📋</div><div class="fc-nm">Riwayat</div><div class="fc-ds">Semua analisis tersimpan, bisa dibuka & share kapan saja</div></div>
+        </div>
+
+        <div class="upcard au3" id="upcard">
+          <div class="up-t">🚀 Upgrade untuk Akses Penuh</div>
+          <div class="up-d">Starter (sekali beli, 10 tanya/hari seumur hidup) atau Pro (unlimited + prioritas jawaban).</div>
+          <div class="up-row">
+            <button class="btn-up bus" onclick="doUpgrade('starter')">Starter — Rp 79.000</button>
+            <button class="btn-up bup" onclick="doUpgrade('pro')">Pro — Rp 99.000/bln</button>
+          </div>
+        </div>
+
+        <!-- Footer disclaimer di dashboard -->
+        <div style="background:var(--rlt);border:1.5px solid rgba(192,57,43,.15);border-radius:var(--r12);padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:20px">
+          <strong style="color:var(--red)">⚠️ Disclaimer:</strong> TanyaHukum adalah platform <strong>edukasi hukum</strong>, bukan jasa konsultasi hukum atau pengganti advokat. Untuk kasus serius, konsultasikan dengan <strong>Advokat PERADI</strong> atau <strong>LBH</strong> terdekat.
+          <a href="#" onclick="showDisc();return false" style="display:block;margin-top:5px;font-size:11px;color:var(--blue)">Baca disclaimer lengkap →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TANYA HUKUM -->
+    <div class="pane" id="pane-tanya">
+      <div class="cmsgs" id="cmsgs">
+        <div class="cempty" id="cempty">
+          <div class="ce-ico">
+            <svg width="52" height="52" viewBox="0 0 44 44" fill="none">
+              <circle cx="22" cy="22" r="22" fill="url(#lg4)"/>
+              <defs><linearGradient id="lg4" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stop-color="#3B6FF8"/><stop offset="100%" stop-color="#1A3FBB"/></linearGradient></defs>
+              <rect x="21" y="11" width="2" height="20" fill="white" rx="1"/>
+              <rect x="14" y="31" width="16" height="2" fill="white" rx="1"/>
+              <rect x="9" y="11" width="26" height="2" fill="white" rx="1"/>
+              <line x1="13" y1="13" x2="13" y2="21" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="31" y1="13" x2="31" y2="19" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 21 Q13 26 17 21" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+              <path d="M27 19 Q31 24 35 19" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,.1)" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2 class="ce-t">Tanya Masalah Hukum</h2>
+          <p class="ce-s">Tulis seperti ngobrol biasa. AI analisis dan beri panduan awal.</p>
+          <div class="chips">
+            <div class="chip" onclick="fillChat('Saya ditipu penjual online, sudah transfer Rp 3 juta tapi barang tidak dikirim dan penjual tidak bisa dihubungi. Apa yang harus saya lakukan?')">💸 Penipuan online</div>
+            <div class="chip" onclick="fillChat('Saya di-PHK mendadak tanpa surat peringatan setelah 3 tahun kerja kontrak. Perusahaan menolak bayar kompensasi. Apa hak saya?')">⚙️ PHK mendadak</div>
+            <div class="chip" onclick="fillChat('Tetangga mendirikan bangunan di tanah saya, padahal saya punya sertifikat sah. Bagaimana cara mendapatkan tanah itu kembali?')">🏠 Sengketa tanah</div>
+            <div class="chip" onclick="fillChat('Saya dipukul orang dalam perselisihan dan ada saksinya. Bagaimana melaporkan ke polisi dan apa yang harus disiapkan?')">👊 Penganiayaan</div>
+            <div class="chip" onclick="fillChat('Hutang saya ke teman sudah 1 tahun tidak dibayar padahal sudah ada bukti transfer dan perjanjian. Apa langkah hukumnya?')">💰 Hutang tak dibayar</div>
+            <div class="chip" onclick="fillChat('Saya membeli tanah dengan PPJB, tapi penjual tidak mau tanda tangan AJB. Apa yang harus saya lakukan?')">📄 Sengketa PPJB</div>
+          </div>
+        </div>
+      </div>
+      <div class="cbar">
+        <div class="istrip" id="cstrip">
+          <img class="ist-img" id="cthumb" src="" alt="">
+          <span class="ist-l">Foto siap dikirim</span>
+          <button class="ist-rm" onclick="rmImg('chat')">✕</button>
+        </div>
+        <div class="ibox">
+          <textarea class="ita" id="cta" placeholder="Ketik masalah hukum Anda…" rows="1" oninput="rz(this)" onkeydown="taK(event)"></textarea>
+          <div class="itb">
+            <div class="tl">
+              <button class="icb" id="vbtn" onclick="toggleVoice()">🎤</button>
+              <button class="icb" onclick="document.getElementById('fi-chat').click()">📷</button>
+              <button class="icb" onclick="showToast('🎥 Tonton video, lalu ceritakan di sini')">🎥</button>
+            </div>
+            <button class="sndb" id="csend" onclick="sendChat()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALISIS DOKUMEN -->
+    <div class="pane" id="pane-analisis">
+      <div class="pp2">
+        <h2 class="pg-t">🔍 Analisis Dokumen</h2>
+        <p class="pg-s">Upload foto dokumen atau paste teks — AI temukan risiko hukum & rekomendasi. Hasil bersifat edukatif.</p>
+        <div class="uzone" id="uz" onclick="document.getElementById('fi-doc').click()">
+          <div class="uz-ico" id="uz-ico">📄</div>
+          <div class="uz-t" id="uz-t">Klik untuk upload dokumen</div>
+          <div class="uz-s">Foto kontrak, perjanjian, surat — JPG, PNG, PDF</div>
+          <div class="hidden" id="uz-fn" style="font-size:13px;font-weight:600;color:var(--grn);margin-top:5px"></div>
+        </div>
+        <div class="ordiv">atau paste teks dokumen</div>
+        <textarea class="bta" id="dta" placeholder="Paste isi kontrak / perjanjian / surat di sini…" rows="5"></textarea>
+        <p class="slbl mt8">Jenis Dokumen</p>
+        <div class="trow">
+          <div class="tc2 sel" onclick="selType(this,'Kontrak/Perjanjian')">📜 Kontrak</div>
+          <div class="tc2" onclick="selType(this,'Surat Somasi')">⚡ Somasi</div>
+          <div class="tc2" onclick="selType(this,'Surat PHK')">📋 PHK</div>
+          <div class="tc2" onclick="selType(this,'Akta/Sertifikat')">🏛 Akta</div>
+          <div class="tc2" onclick="selType(this,'Surat Kuasa')">✍️ Kuasa</div>
+          <div class="tc2" onclick="selType(this,'NDA')">🔒 NDA</div>
+          <div class="tc2" onclick="selType(this,'Perjanjian Jual Beli')">🏠 Jual Beli</div>
+          <div class="tc2" onclick="selType(this,'Lainnya')">❓ Lainnya</div>
+        </div>
+        <button class="btn-grn" id="btn-anal" onclick="runAnalisis()">🔍 Analisis Sekarang</button>
+        <div id="ar" class="hidden"></div>
+      </div>
+    </div>
+
+    <!-- BUAT DOKUMEN -->
+    <div class="pane" id="pane-buat">
+      <div class="pp3">
+        <h2 class="pg-t">📝 Buat Dokumen Hukum</h2>
+        <p class="pg-s">18 template legal — isi data singkat, AI generate dokumen siap pakai. Wajib ditinjau advokat/notaris untuk keabsahan penuh.</p>
+
+        <div class="cat-tabs" id="cat-tabs">
+          <button class="ctab act" onclick="filterCat('semua',this)">Semua (18)</button>
+          <button class="ctab" onclick="filterCat('tuntutan',this)">📨 Surat Tuntutan</button>
+          <button class="ctab" onclick="filterCat('perjanjian',this)">🤝 Perjanjian</button>
+          <button class="ctab" onclick="filterCat('resmi',this)">📋 Surat Resmi</button>
+          <button class="ctab" onclick="filterCat('acara',this)">⚖️ Hukum Acara</button>
+        </div>
+
+        <div id="tpl-grid-wrap"></div>
+
+        <div class="dform" id="dform">
+          <button class="btn-bk" onclick="closeTpl()">← Pilih Template Lain</button>
+          <div class="dtop"><div class="dt-ico" id="dt-ico">📝</div><div><div class="dt-t" id="dt-t">Dokumen</div><div class="dt-s" id="dt-s">Isi data</div></div></div>
+          <div id="dfields"></div>
+          <div class="edu-b"><span>⚠️</span><span>Draft awal untuk referensi. Untuk keabsahan hukum penuh, wajib ditinjau advokat/notaris dan ditandatangani di atas materai.</span></div>
+          <button class="btn-gen" id="bgen" onclick="genDoc()">✨ Generate Dokumen</button>
+        </div>
+
+        <div class="genwrap" id="gwrap">
+          <div class="gen-ok"><span style="font-size:22px">✅</span><div><div style="font-size:14px;font-weight:700;color:var(--grn)">Draft Dokumen Siap</div><div style="font-size:12px;color:var(--grn);margin-top:2px">Tinjau advokat/notaris sebelum digunakan resmi</div></div></div>
+          <div class="doc-out" id="docout"></div>
+          <div class="dacts">
+            <button class="bout bo-cp" onclick="cpDoc()">📋 Salin</button>
+            <button class="bout bo-wa" onclick="waDoc()">📤 WhatsApp</button>
+            <button class="bout bo-rs" onclick="resetDoc()">🔄 Buat Baru</button>
+          </div>
+          <div class="disc-b"><span>ℹ️</span><span>Draft referensi awal. Tanda tangani di atas materai Rp 10.000 dan/atau konsultasikan dengan <strong>Advokat PERADI</strong> atau <strong>Notaris</strong> untuk keabsahan penuh.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIWAYAT -->
+    <div class="pane" id="pane-riwayat">
+      <div class="pp2">
+        <div class="hhead">
+          <div><h2 class="pg-t" style="margin-bottom:0">📋 Riwayat</h2><div class="hcnt" id="hcnt">0 analisis</div></div>
+          <button class="btn-clr" onclick="clearHist()">🗑 Hapus</button>
+        </div>
+        <div id="hlist"></div>
+      </div>
+    </div>
+
+  </div><!-- /carea -->
+
+  <!-- FOOTER DISCLAIMER -->
+  <div class="footer-disc">
+    ⚠️ <strong>TanyaHukum adalah platform edukasi hukum, bukan jasa konsultasi hukum.</strong>
+    Informasi AI bersifat edukatif. Untuk kasus serius hubungi Advokat PERADI atau LBH terdekat.
+    <a href="#" onclick="showDisc();return false">Baca disclaimer</a>
+  </div>
+
+  <nav class="btabs">
+    <button class="btab active" id="bt-dashboard" onclick="goTab('dashboard')"><span class="btab-ico">🏠</span>BERANDA</button>
+    <button class="btab" id="bt-tanya" onclick="goTab('tanya')"><span class="btab-ico">💬</span>TANYA</button>
+    <button class="btab" id="bt-analisis" onclick="goTab('analisis')"><span class="btab-ico">🔍</span>ANALISIS</button>
+    <button class="btab" id="bt-buat" onclick="goTab('buat')"><span class="btab-ico">📝</span>DOKUMEN</button>
+    <button class="btab" id="bt-riwayat" onclick="goTab('riwayat')"><span class="btab-ico">📋</span>RIWAYAT<span class="btab-dot" id="hnotif"></span></button>
+  </nav>
+
+</div><!-- /scr-main -->
+
+<script>
+/* ── STATE ───────────────────────────── */
+const QUOTA={free:3,starter:10,pro:99999};
+const PLBL={free:'⭐ Gratis',starter:'🚀 Starter',pro:'👑 Pro'};
+let A={name:'',plan:'free',usedToday:0,lastDate:'',chatImg:null,chatImgMime:null,docImg:null,docImgMime:null,docType:'Kontrak/Perjanjian',curTpl:null,busy:false,rec:null,isRec:false,history:[],seenDisc:false};
+let selPlanV='free';
+
+/* ── DISCLAIMER ──────────────────────── */
+let discAgreed=false;
+function showDisc(){document.getElementById('disc-overlay').classList.remove('hidden');}
+function toggleAgree(){
+  discAgreed=!discAgreed;
+  const cb=document.getElementById('dm-check');const btn=document.getElementById('btn-disc-ok');
+  cb.classList.toggle('checked',discAgreed);
+  btn.disabled=!discAgreed;btn.classList.toggle('ready',discAgreed);
+}
+function closeDisc(){document.getElementById('disc-overlay').classList.add('hidden');A.seenDisc=true;save();}
+
+/* ── LOGIN ───────────────────────────── */
+function sp(p,el){selPlanV=p;document.querySelectorAll('.popt').forEach(b=>b.className='popt');el.classList.add(p==='free'?'sf':p==='starter'?'ss':'sp');}
+function doLogin(){
+  const n=document.getElementById('inp-name').value.trim();
+  if(!n){showToast('⚠️ Masukkan nama Anda');return;}
+  A.name=n;A.plan=selPlanV;A.usedToday=0;A.lastDate=td();save();
+  document.getElementById('scr-login').classList.remove('active');
+  document.getElementById('scr-main').classList.add('active');
+  if(!A.seenDisc)showDisc();
+  initUI();renderTplGrid('semua');
+}
+
+/* ── INIT UI ─────────────────────────── */
+function initUI(){
+  chkReset();
+  const lim=QUOTA[A.plan],used=A.usedToday,left=Math.max(0,lim-used),pct=lim>=99999?4:Math.min(100,(used/lim)*100);
+  document.getElementById('h-name').textContent=A.name;
+  document.getElementById('h-plan').textContent=PLBL[A.plan];
+  document.getElementById('qc-u').textContent=used;
+  document.getElementById('qc-d').textContent=' / '+(lim>=99999?'∞':lim);
+  const bar=document.getElementById('qc-b');bar.style.width=pct+'%';
+  bar.className='qfill'+(pct>=100?' full':pct>=70?' warn':'');
+  const qb=document.getElementById('nav-quota');
+  if(lim>=99999){qb.textContent='∞ Unlimited';qb.className='qpill qp-ok';}
+  else{qb.textContent=left+' tersisa';qb.className='qpill '+(left===0?'qp-out':left<=2?'qp-low':'qp-ok');}
+  if(A.plan==='pro')document.getElementById('upcard').style.display='none';
+}
+
+/* ── TABS ────────────────────────────── */
+function goTab(t){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+t).classList.add('active');
+  document.getElementById('bt-'+t).classList.add('active');
+  if(t==='dashboard')initUI();
+  if(t==='riwayat'){renderHist();document.getElementById('hnotif').classList.remove('show');}
+}
+
+/* ── QUOTA ───────────────────────────── */
+function chkReset(){if(A.lastDate!==td()){A.usedToday=0;A.lastDate=td();save();}}
+function canAsk(){chkReset();return A.usedToday<QUOTA[A.plan];}
+function consume(){A.usedToday++;save();initUI();}
+function td(){return new Date().toISOString().slice(0,10);}
+function save(){try{localStorage.setItem('th_v1',JSON.stringify(A));}catch{}}
+function load(){try{const s=localStorage.getItem('th_v1');if(s)A={...A,...JSON.parse(s)};}catch{}}
+
+/* ── CALL BACKEND ────────────────────── */
+async function callBE(prompt,featureType,textLen,image,imageMime){
+  const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,featureType,textLen,image,imageMime})});
+  if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error||`Server error ${resp.status}`);}
+  const data=await resp.json();
+  return{text:data.result,model:data.model};
+}
+
+/* ── SYSTEM PROMPTS ──────────────────── */
+const SP_T=`Anda adalah TanyaHukum — asisten edukasi hukum Indonesia untuk masyarakat awam. Platform EDUKASI, bukan jasa hukum. HANYA jawab pertanyaan hukum Indonesia. Tolak sopan jika bukan soal hukum.\n\nKeahlian: Hukum Pidana (KUHP Baru UU 1/2023), Hukum Perdata (KUHPerdata/HIR), PHI/Ketenagakerjaan (UU 6/2023, PP 35/2021), Hukum Agraria (UUPA), Hukum Konsumen (UU 8/1999).\n\nBALAS HANYA JSON VALID tanpa markdown:\n{"jenis_hukum":{"kategori":"PIDANA|PERDATA|KETENAGAKERJAAN|AGRARIA|KONSUMEN","emoji":"emoji sesuai","ringkasan_kasus":"ringkasan kasus 1-2 kalimat bahasa awam","pasal_berlaku":[{"kode":"Pasal X UU/PP Y","nama_uu":"nama lengkap UU/regulasi","penjelasan":"kenapa berlaku, bahasa awam"}]},"hak_anda":{"kalimat_utama":"kalimat kuat tentang posisi hak pengguna","poin_hak":[{"hak":"nama hak","penjelasan":"penjelasan singkat bahasa awam"}]},"langkah_nyata":[{"nomor":1,"judul":"judul aksi maks 7 kata","detail":"penjelasan konkret apa yang harus dilakukan","waktu":"kapan, misal: Segera hari ini / Dalam 7 hari"}],"peringatan":"hal yang TIDAK boleh dilakukan atau risiko penting"}`;
+const SP_A=`Anda adalah analis dokumen hukum Indonesia profesional. Platform edukasi. BALAS HANYA JSON VALID:\n{"judul_dokumen":"judul/jenis dokumen","ringkasan":"ringkasan isi 2-3 kalimat","risiko":[{"judul":"nama risiko","level":"TINGGI|SEDANG|RENDAH","detail":"penjelasan risiko dalam bahasa awam"}],"rekomendasi":["rekomendasi tindakan 1","rekomendasi tindakan 2"]}`;
+
+/* ── CHAT ────────────────────────────── */
+function fillChat(t){const ta=document.getElementById('cta');ta.value=t;rz(ta);ta.focus();}
+function taK(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
+function rz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,180)+'px';}
+
+async function sendChat(){
+  if(A.busy)return;
+  const txt=document.getElementById('cta').value.trim();
+  if(!txt&&!A.chatImg){showToast('⚠️ Ceritakan masalah hukum Anda dulu');return;}
+  if(!canAsk()){appendGate();return;}
+  document.getElementById('cempty').style.display='none';
+  appendU(txt,A.chatImg?document.getElementById('cthumb').src:null);
+  document.getElementById('cta').value='';rz(document.getElementById('cta'));
+  const img=A.chatImg,mime=A.chatImgMime;rmImg('chat');
+  document.getElementById('csend').disabled=true;A.busy=true;
+  const tid=showTh();
+  try{
+    const pr=`${SP_T}\n\nKasus user:\n${txt||'(Analisis foto/dokumen)'}`;
+    const{text,model}=await callBE(pr,'tanya',txt.length,img,mime);
+    const data=parseJ(text);rmTh(tid);
+    const st=buildST(data,txt);
+    appendResult(data,model,st);consume();
+    addH({icon:'💬',title:txt.slice(0,60)||'Analisis foto',preview:data.jenis_hukum?.ringkasan_kasus||'',model,shareText:st,date:new Date().toISOString()});
+  }catch(e){rmTh(tid);appendErr(e.message);}
+  finally{A.busy=false;document.getElementById('csend').disabled=false;}
+}
+function appendU(txt,imgSrc){
+  const el=document.createElement('div');el.className='msg-u';
+  el.innerHTML=`<div class="bbl-u">${imgSrc?`<img src="${imgSrc}">`:''} ${txt?esc(txt):''}</div>`;
+  document.getElementById('cmsgs').appendChild(el);scr();
+}
+function showTh(){
+  const id='th'+Date.now();const el=document.createElement('div');el.id=id;el.className='thinking';
+  el.innerHTML=`<div class="ai-av">⚖️</div><div><div class="mtag mt-g" id="${id}-t">⚡ AI menganalisis…</div><div class="th-bbl"><div class="th-dot"></div><div class="th-dot"></div><div class="th-dot"></div></div><div class="pbar"><div class="pfill"></div></div></div>`;
+  document.getElementById('cmsgs').appendChild(el);scr();return id;
+}
+function rmTh(id){const e=document.getElementById(id);if(e)e.remove();}
+function appendErr(msg){
+  const el=document.createElement('div');el.className='msg-ai';
+  el.innerHTML=`<div class="ai-av">⚖️</div><div class="ai-wrap"><div class="disc-b" style="background:var(--rlt);border-color:rgba(192,57,43,.2);color:var(--red)"><span>⚠️</span><span>${esc(msg)}</span></div></div>`;
+  document.getElementById('cmsgs').appendChild(el);scr();
+}
+function appendGate(){
+  const el=document.createElement('div');
+  el.innerHTML=`<div class="qgate ci"><div class="qg-ico">🔒</div><div class="qg-t">Kuota Habis Hari Ini</div><div class="qg-d">Upgrade untuk lanjut atau tunggu reset tengah malam.</div><div class="qg-row"><button class="btn-qg bqb" onclick="doUpgrade('starter')">Starter Rp 79rb</button><button class="btn-qg bqp" onclick="doUpgrade('pro')">Pro Rp 99rb/bln</button></div></div>`;
+  document.getElementById('cmsgs').appendChild(el);scr();
+}
+function doUpgrade(p){A.plan=p;A.usedToday=0;save();initUI();showToast('✅ '+PLBL[p]+' aktif! (Demo)');}
+function scr(){const b=document.getElementById('cmsgs');setTimeout(()=>b.scrollTop=b.scrollHeight,80);}
+
+function appendResult(d,model,st){
+  const j=d.jenis_hukum||{},h=d.hak_anda||{},l=d.langkah_nyata||[];
+  const kat=(j.kategori||'').toUpperCase();
+  const htBg=kat.includes('PIDANA')&&kat.includes('PERDATA')?'var(--plt)':kat.includes('PIDANA')?'var(--rlt)':kat.includes('PERDATA')?'var(--blt)':kat.includes('AGRARIA')?'var(--glt)':'var(--glt)';
+  const htC=kat.includes('PIDANA')&&kat.includes('PERDATA')?'var(--pur)':kat.includes('PIDANA')?'var(--red)':kat.includes('PERDATA')?'var(--blue)':'var(--grn)';
+  const pHtml=(j.pasal_berlaku||[]).map(p=>`<div class="psi"><span class="pst">${esc(p.kode)}</span><div><div class="psn">${esc(p.nama_uu)}</div><div class="psd">${esc(p.penjelasan)}</div></div></div>`).join('');
+  const hHtml=(h.poin_hak||[]).map(p=>`<div class="hki"><div class="hkc">✓</div><div class="hkt"><strong>${esc(p.hak)}</strong> — ${esc(p.penjelasan)}</div></div>`).join('');
+  const sHtml=l.map(s=>`<div class="sti"><div class="stn">${s.nomor}</div><div><div class="stt">${esc(s.judul)}</div><div class="std">${esc(s.detail)}</div>${s.waktu?`<div class="stw">⏰ ${esc(s.waktu)}</div>`:''}</div></div>`).join('');
+  const b64=enc(st);
+  const el=document.createElement('div');el.className='msg-ai';
+  el.innerHTML=`<div class="ai-av">⚖️</div><div class="ai-wrap">
+    <div class="mtag mt-${model==='claude'?'c':'g'}">${model==='claude'?'🔵 Claude':'🟢 Gemini'}</div>
+    <div class="rstack">
+      <div class="rcard2 ci"><div class="rh hb"><div class="rh-ico ri-b">⚖️</div><div class="rh-m"><div class="rh-n rn-b">Kartu 1 — Jenis Hukum</div><div class="rh-t"><span style="background:${htBg};color:${htC};padding:2px 10px;border-radius:20px;font-size:13px">${esc(j.emoji||'⚖️')} ${esc(j.kategori||'')}</span></div></div></div><div class="rb">${j.ringkasan_kasus?`<p style="font-size:13px;color:var(--t2);margin-bottom:11px;line-height:1.6">${esc(j.ringkasan_kasus)}</p>`:''}<div class="psl">${pHtml}</div></div></div>
+      <div class="rcard2 ci1"><div class="rh hg"><div class="rh-ico ri-g">🛡️</div><div class="rh-m"><div class="rh-n rn-g">Kartu 2 — Hak Anda</div><div class="rh-t">${esc(h.kalimat_utama||'Hak yang Bisa Anda Tuntut')}</div></div></div><div class="rb"><div class="hkl">${hHtml}</div></div></div>
+      <div class="rcard2 ci2"><div class="rh ho"><div class="rh-ico ri-o">🚶</div><div class="rh-m"><div class="rh-n rn-o">Kartu 3 — Langkah Nyata</div><div class="rh-t">Yang Harus Dilakukan Sekarang</div></div></div><div class="rb"><div class="stl">${sHtml}</div></div></div>
+      ${d.peringatan?`<div class="warn-b ci3"><span>⚠️</span><span>${esc(d.peringatan)}</span></div>`:''}
+      <div class="edu-b ci3"><span>⚠️</span><span><strong>Ingat:</strong> Ini informasi edukatif, bukan nasihat hukum resmi. Untuk tindakan hukum serius, konsultasikan <strong>Advokat PERADI</strong> atau <strong>LBH</strong> terdekat.</span></div>
+      <div class="sbar ci3"><span class="slbl2">Bagikan:</span><button class="sbtn sb-w" onclick="waS('${b64}')">📤 WhatsApp</button><button class="sbtn sb-c" onclick="cpS('${b64}')">📋 Salin</button></div>
+    </div></div>`;
+  document.getElementById('cmsgs').appendChild(el);scr();
+}
+
+/* ── ANALISIS ─────────────────────────── */
+function selType(el,t){A.docType=t;document.querySelectorAll('.tc2').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+async function runAnalisis(){
+  if(A.busy)return;if(!canAsk()){showToast('⚠️ Kuota habis');return;}
+  const txt=document.getElementById('dta').value.trim();
+  if(!txt&&!A.docImg){showToast('⚠️ Upload dokumen atau paste teks dulu');return;}
+  A.busy=true;const btn=document.getElementById('btn-anal');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Menganalisis…';
+  document.getElementById('ar').classList.add('hidden');
+  try{
+    const pr=`${SP_A}\nJenis: ${A.docType}\n\nIsi/kasus:\n${txt||'(Lihat gambar)'}`;
+    const{text,model}=await callBE(pr,'analisis',txt.length,A.docImg,A.docImgMime);
+    const data=parseJ(text);renderAR(data,model);consume();
+    addH({icon:'🔍',title:'Analisis '+A.docType,preview:data.ringkasan||'',model,shareText:buildAS(data),date:new Date().toISOString()});
+  }catch(e){showToast('⚠️ '+e.message);}
+  finally{A.busy=false;btn.disabled=false;btn.innerHTML='🔍 Analisis Sekarang';}
+}
+function renderAR(d,model){
+  const el=document.getElementById('ar');el.classList.remove('hidden');
+  const rH=(d.risiko||[]).map(r=>{const cls=r.level==='TINGGI'?'rk-h':r.level==='SEDANG'?'rk-m':'rk-l';const ico=r.level==='TINGGI'?'🔴':r.level==='SEDANG'?'🟡':'🟢';return`<div class="rki ${cls}"><div style="font-size:16px;flex-shrink:0">${ico}</div><div class="rkt"><strong>${esc(r.judul||'')} [${r.level||''}]</strong>${esc(r.detail||'')}</div></div>`;}).join('');
+  const rkH=(d.rekomendasi||[]).map(r=>`<div class="hki"><div class="hkc">💡</div><div class="hkt">${esc(r)}</div></div>`).join('');
+  const b64=enc(buildAS(d));
+  el.innerHTML=`<div class="arst">
+    <div class="mtag mt-${model==='claude'?'c':'g'}" style="margin-bottom:8px">${model==='claude'?'🔵 Claude':'🟢 Gemini'}</div>
+    <div class="arc ci"><div class="arh" style="background:var(--blt);border-bottom-color:rgba(35,85,232,.12)"><span class="arh-i">📋</span><div><div class="arh-l" style="color:var(--blue)">Ringkasan</div><div class="arh-t">${esc(d.judul_dokumen||A.docType)}</div></div></div><div class="arb">${esc(d.ringkasan||'')}</div></div>
+    <div class="arc ci1"><div class="arh" style="background:var(--rlt);border-bottom-color:rgba(192,57,43,.12)"><span class="arh-i">⚠️</span><div><div class="arh-l" style="color:var(--red)">Risiko Hukum</div><div class="arh-t">${(d.risiko||[]).length} risiko ditemukan</div></div></div><div class="arb">${rH||'<div class="rki rk-l"><div>🟢</div><div class="rkt">Tidak ada risiko besar terdeteksi</div></div>'}</div></div>
+    <div class="arc ci2"><div class="arh" style="background:var(--glt);border-bottom-color:rgba(10,122,80,.12)"><span class="arh-i">💡</span><div><div class="arh-l" style="color:var(--grn)">Rekomendasi</div><div class="arh-t">Langkah Disarankan</div></div></div><div class="arb"><div class="hkl">${rkH}</div></div></div>
+    <div class="sbar ci3"><span class="slbl2">Bagikan:</span><button class="sbtn sb-w" onclick="waS('${b64}')">📤 WhatsApp</button><button class="sbtn sb-c" onclick="cpS('${b64}')">📋 Salin</button></div>
+    <div class="disc-b"><span>ℹ️</span><span>Analisis edukatif. Konsultasikan advokat untuk keputusan hukum penting.</span></div>
+  </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function buildAS(d){let t=`⚖️ *TanyaHukum — Analisis Dokumen*\n\n📋 *Dokumen:* ${d.judul_dokumen||'-'}\n📍 *Ringkasan:* ${d.ringkasan||'-'}\n\n⚠️ *Risiko:*\n`;(d.risiko||[]).forEach(r=>{t+=`• [${r.level}] ${r.judul} — ${r.detail}\n`;});t+=`\n💡 *Rekomendasi:*\n`;(d.rekomendasi||[]).forEach(r=>{t+=`• ${r}\n`;});t+=`\n—\nTanyaHukum | Platform Edukasi Hukum Indonesia | Bukan jasa konsultasi hukum`;return t;}
+
+/* ── TEMPLATE DEFINITIONS (18) ────────── */
+const CATS={
+  tuntutan:'📨 Surat Tuntutan',
+  perjanjian:'🤝 Perjanjian & Kontrak',
+  resmi:'📋 Surat Resmi',
+  acara:'⚖️ Hukum Acara'
+};
+const TPL=[
+  // TUNTUTAN
+  {id:'somasi',cat:'tuntutan',icon:'⚡',name:'Surat Somasi',desc:'Teguran resmi sebelum gugatan ke pihak wanprestasi',tag:'f',
+    fields:[{id:'pengirim',l:'Pengirim / Perusahaan',p:'PT. Maju Jaya / Budi Santoso'},{id:'penerima',l:'Penerima Somasi',p:'Nama orang/perusahaan'},{id:'pokok',l:'Pokok Masalah / Wanprestasi',p:'Jelaskan apa yang dilanggar...',ta:true},{id:'nilai',l:'Nilai / Jumlah Kerugian',p:'Rp 50.000.000'},{id:'batas',l:'Batas Waktu Respons',p:'7 hari / 14 hari'}]},
+  {id:'keberatan',cat:'tuntutan',icon:'📢',name:'Surat Keberatan Formal',desc:'Keberatan resmi atas keputusan/tindakan pihak lain',tag:'f',
+    fields:[{id:'pengaju',l:'Pengaju Keberatan',p:'Nama + alamat'},{id:'dituju',l:'Pihak yang Dituju',p:'Nama instansi/perusahaan'},{id:'keputusan',l:'Keputusan / Tindakan yang Dikeberatan',p:'Jelaskan keputusan yang dipermasalahkan...',ta:true},{id:'dasar',l:'Dasar Hukum Keberatan',p:'Pasal X UU Y / alasan hukum'},{id:'tuntutan',l:'Permintaan / Tuntutan',p:'Apa yang diminta dari pihak dituju'}]},
+  {id:'tuntutan_gr',cat:'tuntutan',icon:'💰',name:'Surat Tuntutan Ganti Rugi',desc:'Tuntutan ganti kerugian materiil & immateriil',tag:'f',
+    fields:[{id:'penuntut',l:'Nama Penuntut',p:'Nama + alamat + NIK'},{id:'teradu',l:'Nama Pihak yang Dituntut',p:'Nama + alamat'},{id:'peristiwa',l:'Kronologi & Peristiwa Penyebab Kerugian',p:'Uraikan kejadian secara detail...',ta:true},{id:'mat',l:'Kerugian Materiil',p:'Rp 25.000.000 (rincikan)'},{id:'immat',l:'Kerugian Immateriil',p:'Rp 50.000.000 / uraikan'},{id:'batas',l:'Batas Waktu Pembayaran',p:'14 hari / 30 hari'}]},
+  // PERJANJIAN
+  {id:'perjanjian',cat:'perjanjian',icon:'🤝',name:'Kontrak / Perjanjian',desc:'Kontrak bisnis, kerjasama, atau perjanjian umum',tag:'p',
+    fields:[{id:'p1',l:'Pihak Pertama (Nama + Jabatan)',p:'Budi Santoso, Direktur PT. ABC'},{id:'p2',l:'Pihak Kedua (Nama + Jabatan)',p:'Sari Dewi, sebagai pribadi'},{id:'objek',l:'Objek / Lingkup Perjanjian',p:'Jasa konsultasi IT / jual beli barang / kerjasama usaha'},{id:'nilai',l:'Nilai / Harga',p:'Rp 100.000.000'},{id:'durasi',l:'Jangka Waktu',p:'6 bulan / 1 tahun'},{id:'kewajiban',l:'Kewajiban Masing-Masing Pihak',p:'Pihak 1: ... Pihak 2: ...',ta:true}]},
+  {id:'pkwt',cat:'perjanjian',icon:'📑',name:'Perjanjian Kerja (PKWT)',desc:'Kontrak karyawan sesuai UU Cipta Kerja & PP 35/2021',tag:'p',
+    fields:[{id:'perusahaan',l:'Nama & Alamat Perusahaan',p:'PT. Sukses Abadi, Jakarta'},{id:'karyawan',l:'Nama Karyawan + NIK',p:'Budi Santoso — NIK 317XXXXXXXX'},{id:'jabatan',l:'Jabatan / Posisi',p:'Staff Marketing'},{id:'gaji',l:'Gaji Pokok',p:'Rp 5.000.000/bulan'},{id:'durasi',l:'Durasi Kontrak',p:'1 tahun (1 Jan 2026 – 31 Des 2026)'},{id:'tugas',l:'Tugas & Tanggung Jawab Utama',p:'Uraikan tugas...',ta:true}]},
+  {id:'mou',cat:'perjanjian',icon:'🏢',name:'MOU / Perjanjian Kerjasama',desc:'Nota Kesepahaman / PKS antar lembaga atau perusahaan',tag:'p',
+    fields:[{id:'p1',l:'Pihak Pertama',p:'PT. Maju Bersama, diwakili Direktur'},{id:'p2',l:'Pihak Kedua',p:'CV. Karya Nusantara, diwakili Direktur'},{id:'tujuan',l:'Tujuan Kerjasama',p:'Pengembangan sistem teknologi bersama'},{id:'ruang',l:'Ruang Lingkup Kerjasama',p:'Uraikan bidang kerjasama...',ta:true},{id:'durasi',l:'Jangka Waktu MOU',p:'2 tahun, dapat diperpanjang'},{id:'hak',l:'Hak & Kewajiban Masing-Masing',p:'Pihak 1: ... Pihak 2: ...',ta:true}]},
+  {id:'jual_beli',cat:'perjanjian',icon:'🏠',name:'Perjanjian Jual Beli',desc:'PPJB aset, kendaraan, atau barang bernilai tinggi',tag:'p',
+    fields:[{id:'penjual',l:'Penjual (Nama + Alamat)',p:'Nama lengkap + alamat + NIK'},{id:'pembeli',l:'Pembeli (Nama + Alamat)',p:'Nama lengkap + alamat + NIK'},{id:'objek',l:'Objek yang Dijual',p:'Rumah / Kendaraan / Tanah di (alamat lengkap)'},{id:'harga',l:'Harga Jual',p:'Rp 500.000.000'},{id:'cara_bayar',l:'Cara & Jadwal Pembayaran',p:'Tunai / DP Rp X lalu pelunasan'},{id:'serah',l:'Waktu & Syarat Serah Terima',p:'7 hari setelah pelunasan'}]},
+  {id:'sewa',cat:'perjanjian',icon:'🔑',name:'Perjanjian Sewa Menyewa',desc:'Sewa properti, kendaraan, atau peralatan',tag:'f',
+    fields:[{id:'pemilik',l:'Pihak Menyewakan (Nama + Alamat)',p:'Nama + alamat pemilik'},{id:'penyewa',l:'Penyewa (Nama + Alamat)',p:'Nama + alamat penyewa'},{id:'objek',l:'Objek yang Disewakan',p:'Rumah / Kendaraan / Ruko di (alamat)'},{id:'harga',l:'Harga Sewa',p:'Rp 2.000.000/bulan atau Rp 24.000.000/tahun'},{id:'durasi',l:'Jangka Waktu Sewa',p:'1 tahun (1 Jan 2026 – 31 Des 2026)'},{id:'kewajiban',l:'Kewajiban Penyewa',p:'Perawatan rutin, tidak untuk usaha, dll'}]},
+  {id:'utang',cat:'perjanjian',icon:'💵',name:'Perjanjian Utang Piutang',desc:'Bukti pinjaman uang yang mengikat secara hukum',tag:'f',
+    fields:[{id:'kreditur',l:'Pemberi Pinjaman / Kreditur',p:'Nama + alamat + NIK'},{id:'debitur',l:'Penerima Pinjaman / Debitur',p:'Nama + alamat + NIK'},{id:'jumlah',l:'Jumlah Pinjaman',p:'Rp 50.000.000 (Lima Puluh Juta Rupiah)'},{id:'bunga',l:'Bunga (jika ada)',p:'Tanpa bunga / bunga X% per bulan'},{id:'jatuh',l:'Tanggal Jatuh Tempo',p:'31 Desember 2026'},{id:'jaminan',l:'Jaminan (jika ada)',p:'BPKB kendaraan / tidak ada jaminan'}]},
+  {id:'nda',cat:'perjanjian',icon:'🔒',name:'NDA / Perjanjian Kerahasiaan',desc:'Non-Disclosure Agreement untuk melindungi informasi rahasia',tag:'p',
+    fields:[{id:'disclosing',l:'Pihak Pengungkap (Disclosing Party)',p:'Nama/perusahaan yang memiliki informasi rahasia'},{id:'receiving',l:'Pihak Penerima (Receiving Party)',p:'Nama/perusahaan yang menerima informasi'},{id:'info',l:'Definisi Informasi Rahasia',p:'Data keuangan, teknis, strategi bisnis, kode program...'},{id:'tujuan',l:'Tujuan Pengungkapan',p:'Untuk negosiasi kerjasama / evaluasi bisnis'},{id:'durasi',l:'Jangka Waktu Kerahasiaan',p:'3 tahun sejak penandatanganan'}]},
+  // SURAT RESMI
+  {id:'sp',cat:'resmi',icon:'⚠️',name:'Surat Peringatan (SP)',desc:'SP-1/SP-2/SP-3 karyawan sesuai UU Ketenagakerjaan',tag:'f',
+    fields:[{id:'perusahaan',l:'Nama & Alamat Perusahaan',p:'PT. Sukses Abadi'},{id:'karyawan',l:'Nama Karyawan',p:'Nama karyawan'},{id:'jabatan',l:'Jabatan',p:'Staff Admin / Supervisor'},{id:'jenis',l:'Jenis Surat Peringatan',p:'SP-1 / SP-2 / SP-3'},{id:'pelanggaran',l:'Pelanggaran yang Dilakukan',p:'Uraikan jenis & kronologi pelanggaran...',ta:true},{id:'sanksi',l:'Sanksi / Tindak Lanjut',p:'Peringatan / Sanksi disiplin / Ancaman PHK'}]},
+  {id:'kuasa',cat:'resmi',icon:'✍️',name:'Surat Kuasa',desc:'Pelimpahan wewenang hukum kepada pihak lain',tag:'f',
+    fields:[{id:'pemberi',l:'Pemberi Kuasa (Nama + NIK)',p:'Nama lengkap + NIK + alamat'},{id:'penerima',l:'Penerima Kuasa (Nama + NIK)',p:'Nama lengkap + NIK + alamat'},{id:'keperluan',l:'Hal yang Dikuasakan',p:'Mengurus sertifikat tanah di BPN / mewakili di pengadilan / dll...',ta:true},{id:'berlaku',l:'Masa Berlaku',p:'Sampai selesai urusan / sampai tanggal X'}]},
+  {id:'pernyataan',cat:'resmi',icon:'📋',name:'Surat Pernyataan',desc:'Pernyataan bermaterai untuk berbagai keperluan resmi',tag:'f',
+    fields:[{id:'nama',l:'Nama Pembuat Pernyataan + NIK',p:'Nama lengkap + NIK + jabatan (jika ada)'},{id:'isi',l:'Isi / Substansi Pernyataan',p:'Saya menyatakan bahwa...',ta:true},{id:'tujuan',l:'Tujuan Pernyataan',p:'Untuk keperluan: melamar kerja / perbankan / dll'}]},
+  {id:'phk',cat:'resmi',icon:'📤',name:'Surat Pemberitahuan PHK',desc:'Surat PHK sesuai prosedur UU Cipta Kerja',tag:'p',
+    fields:[{id:'perusahaan',l:'Nama Perusahaan',p:'PT. Sukses Abadi'},{id:'karyawan',l:'Nama Karyawan + Jabatan',p:'Nama + jabatan + NIK'},{id:'tanggal',l:'Tanggal Efektif PHK',p:'31 Januari 2026'},{id:'alasan',l:'Alasan PHK',p:'Efisiensi perusahaan / pelanggaran berat / masa kontrak habis'},{id:'hak',l:'Hak yang Akan Diterima Karyawan',p:'Uang pesangon Rp X / kompensasi PKWT / dll'}]},
+  {id:'ba',cat:'resmi',icon:'📄',name:'Berita Acara Serah Terima',desc:'Dokumentasi penyerahan aset, pekerjaan, atau barang',tag:'f',
+    fields:[{id:'penyerah',l:'Pihak yang Menyerahkan',p:'Nama + jabatan + perusahaan'},{id:'penerima',l:'Pihak yang Menerima',p:'Nama + jabatan + perusahaan'},{id:'objek',l:'Objek yang Diserahkan',p:'Deskripsi aset/barang/pekerjaan yang diserahkan',ta:true},{id:'kondisi',l:'Kondisi Objek',p:'Baik / sesuai spesifikasi / dengan catatan...'},{id:'tanggal',l:'Tanggal & Tempat Serah Terima',p:'Jakarta, 1 Januari 2026'}]},
+  // HUKUM ACARA
+  {id:'gugatan',cat:'acara',icon:'⚖️',name:'Surat Gugatan',desc:'Draft gugatan PMH / wanprestasi ke Pengadilan Negeri',tag:'p',
+    fields:[{id:'penggugat',l:'Penggugat (Nama + Alamat Lengkap)',p:'Nama + alamat + NIK'},{id:'tergugat',l:'Tergugat (Nama + Alamat Lengkap)',p:'Nama + alamat'},{id:'pengadilan',l:'Pengadilan Negeri yang Dituju',p:'PN Jakarta Selatan / PN Surabaya'},{id:'pokok',l:'Pokok Perkara & Kronologi Lengkap',p:'Uraikan fakta dan kronologi secara rinci...',ta:true},{id:'kerugian',l:'Nilai Kerugian / Tuntutan',p:'Materiil: Rp X, Immateriil: Rp Y'},{id:'petitum',l:'Petitum / Tuntutan kepada Hakim',p:'Mengabulkan gugatan seluruhnya...',ta:true}]},
+  {id:'jawaban',cat:'acara',icon:'💬',name:'Jawaban Gugatan',desc:'Respons formal tergugat atas gugatan yang masuk',tag:'p',
+    fields:[{id:'tergugat',l:'Nama Tergugat (Nama + Alamat)',p:'Nama + alamat'},{id:'noperkara',l:'Nomor Perkara',p:'No. 123/Pdt.G/2025/PN.JKT.SEL'},{id:'eksepsi',l:'Eksepsi (Keberatan Formil)',p:'Keberatan atas kompetensi absolut/relatif dll (jika ada)'},{id:'bantahan',l:'Bantahan / Sangkalan Materiil',p:'Uraikan bantahan atas dalil-dalil penggugat...',ta:true},{id:'tuntutan',l:'Tuntutan Balik (Reconventie) jika ada',p:'Menghukum penggugat membayar... / tidak ada'}]},
+  {id:'bpsk',cat:'acara',icon:'🏛️',name:'Pengaduan BPSK',desc:'Aduan konsumen ke Badan Penyelesaian Sengketa Konsumen',tag:'f',
+    fields:[{id:'konsumen',l:'Nama Konsumen / Pengadu',p:'Nama + alamat + nomor HP'},{id:'pelaku',l:'Nama Pelaku Usaha',p:'Nama toko/perusahaan + alamat'},{id:'barang',l:'Nama Barang / Jasa yang Dipermasalahkan',p:'Nama produk / layanan'},{id:'kronologi',l:'Kronologi Sengketa',p:'Kapan, apa yang terjadi, bukti apa yang dimiliki...',ta:true},{id:'kerugian',l:'Kerugian yang Dialami',p:'Rp X / uraikan kerugian'},{id:'tuntutan',l:'Tuntutan Penyelesaian',p:'Pengembalian uang / perbaikan / ganti rugi'}]},
+];
+
+/* ── RENDER TEMPLATES ─────────────────── */
+function renderTplGrid(cat){
+  const wrap=document.getElementById('tpl-grid-wrap');
+  const filtered=cat==='semua'?TPL:TPL.filter(t=>t.cat===cat);
+  if(cat==='semua'){
+    // Group by category
+    let html='';
+    Object.entries(CATS).forEach(([cid,clabel])=>{
+      const items=TPL.filter(t=>t.cat===cid);
+      if(!items.length)return;
+      html+=`<div class="cat-section"><div class="cat-title"><span>${clabel}</span></div><div class="tgrid">${items.map(t=>tplCard(t)).join('')}</div></div>`;
+    });
+    wrap.innerHTML=html;
+  }else{
+    wrap.innerHTML=`<div class="tgrid">${filtered.map(t=>tplCard(t)).join('')}</div>`;
+  }
+}
+function tplCard(t){
+  return`<div class="tcard" onclick="openTpl('${t.id}')"><div class="tc-ico">${t.icon}</div><div class="tc-nm">${t.name}</div><div class="tc-ds">${t.desc}</div><span class="tc-tag ${t.tag==='f'?'ttf':'ttp'}">${t.tag==='f'?'Gratis':'Pro'}</span></div>`;
+}
+function filterCat(cat,el){
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('act'));
+  el.classList.add('act');
+  document.getElementById('tpl-grid-wrap').style.display='';
+  document.getElementById('dform').classList.remove('open');
+  document.getElementById('gwrap').classList.remove('open');
+  renderTplGrid(cat);
+}
+function openTpl(id){
+  const t=TPL.find(x=>x.id===id);if(!t)return;
+  A.curTpl=id;
+  document.getElementById('tpl-grid-wrap').style.display='none';
+  document.getElementById('cat-tabs').style.display='none';
+  document.getElementById('gwrap').classList.remove('open');
+  const df=document.getElementById('dform');df.classList.add('open');
+  document.getElementById('dt-ico').textContent=t.icon;
+  document.getElementById('dt-t').textContent=t.name;
+  document.getElementById('dt-s').textContent=t.desc;
+  document.getElementById('dfields').innerHTML=t.fields.map(f=>`<div style="margin-bottom:11px"><label class="df-lbl">${esc(f.l)}</label>${f.ta?`<textarea class="df-inp" id="df-${f.id}" placeholder="${esc(f.p)}" rows="3"></textarea>`:`<input class="df-inp" id="df-${f.id}" type="text" placeholder="${esc(f.p)}">`}</div>`).join('');
+}
+function closeTpl(){
+  A.curTpl=null;
+  document.getElementById('dform').classList.remove('open');
+  document.getElementById('gwrap').classList.remove('open');
+  document.getElementById('tpl-grid-wrap').style.display='';
+  document.getElementById('cat-tabs').style.display='flex';
+}
+async function genDoc(){
+  if(A.busy||!A.curTpl)return;if(!canAsk()){showToast('⚠️ Kuota habis');return;}
+  const t=TPL.find(x=>x.id===A.curTpl);
+  const fd={};t.fields.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el)fd[f.l]=el.value.trim();});
+  const fd2=Object.entries(fd).map(([k,v])=>`${k}: ${v||'(kosong)'}`).join('\n');
+  A.busy=true;const btn=document.getElementById('bgen');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Membuat Dokumen…';
+  try{
+    const pr=`Anda adalah legal drafter profesional Indonesia berpengalaman 20 tahun. Buat ${t.name} yang sah secara hukum Indonesia. Gunakan bahasa hukum formal dan baku. Pastikan mencakup semua klausul penting sesuai KUHPerdata, UU yang berlaku, dan praktik hukum Indonesia. BALAS HANYA isi dokumen lengkap siap cetak — mulai dari kop/judul hingga blok tanda tangan. Sertakan: nomor dokumen, tanggal hari ini, identitas pihak-pihak, pasal-pasal/klausul, dan blok tanda tangan bermaterai.\n\nData yang diisi:\n${fd2}`;
+    const{text,model}=await callBE(pr,'draft',0,null,null);
+    document.getElementById('docout').textContent=text;
+    document.getElementById('dform').classList.remove('open');
+    const gw=document.getElementById('gwrap');gw.classList.add('open');gw.scrollIntoView({behavior:'smooth',block:'start'});
+    consume();addH({icon:'📝',title:t.name,preview:Object.values(fd).filter(Boolean)[0]||'',model,shareText:text,date:new Date().toISOString()});
+  }catch(e){showToast('⚠️ '+e.message);}
+  finally{A.busy=false;btn.disabled=false;btn.innerHTML='✨ Generate Dokumen';}
+}
+function cpDoc(){navigator.clipboard.writeText(document.getElementById('docout').textContent).then(()=>showToast('✅ Dokumen disalin!'));}
+function waDoc(){window.open('https://wa.me/?text='+encodeURIComponent(document.getElementById('docout').textContent),'_blank');}
+function resetDoc(){document.getElementById('gwrap').classList.remove('open');closeTpl();}
+
+/* ── IMAGE HANDLING ──────────────────── */
+function handleImg(e,t){
+  const file=e.target.files[0];if(!file)return;const r=new FileReader();
+  r.onload=ev=>{const b64=ev.target.result.split(',')[1],mime=file.type||'image/jpeg';
+    if(t==='chat'){A.chatImg=b64;A.chatImgMime=mime;document.getElementById('cthumb').src=ev.target.result;document.getElementById('cstrip').style.display='flex';showToast('📷 Foto siap — kirim untuk analisis');}
+    else{A.docImg=b64;A.docImgMime=mime;document.getElementById('uz').classList.add('hf');document.getElementById('uz-ico').textContent='✅';document.getElementById('uz-t').textContent='Dokumen siap dianalisis';const fn=document.getElementById('uz-fn');fn.textContent=file.name;fn.classList.remove('hidden');}
+  };r.readAsDataURL(file);
+}
+function rmImg(t){
+  if(t==='chat'){A.chatImg=null;A.chatImgMime=null;document.getElementById('cstrip').style.display='none';document.getElementById('cthumb').src='';document.getElementById('fi-chat').value='';}
+  else{A.docImg=null;A.docImgMime=null;document.getElementById('uz').classList.remove('hf');document.getElementById('uz-ico').textContent='📄';document.getElementById('uz-t').textContent='Klik untuk upload dokumen';document.getElementById('uz-fn').classList.add('hidden');document.getElementById('fi-doc').value='';}
+}
+
+/* ── VOICE INPUT ─────────────────────── */
+function toggleVoice(){
+  const btn=document.getElementById('vbtn');const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){showToast('⚠️ Gunakan Chrome untuk input suara');return;}
+  if(A.isRec){A.rec&&A.rec.stop();return;}
+  A.rec=new SR();A.rec.lang='id-ID';A.rec.continuous=true;A.rec.interimResults=true;
+  A.rec.onstart=()=>{A.isRec=true;btn.classList.add('rec');btn.textContent='🔴';showToast('🎤 Rekam aktif — ceritakan masalah Anda');};
+  A.rec.onresult=ev=>{let t='';for(let i=0;i<ev.results.length;i++)t+=ev.results[i][0].transcript;const ta=document.getElementById('cta');ta.value=t;rz(ta);};
+  A.rec.onerror=A.rec.onend=()=>{A.isRec=false;btn.classList.remove('rec');btn.textContent='🎤';};
+  A.rec.start();
+}
+
+/* ── HISTORY ─────────────────────────── */
+function addH(item){if(!A.history)A.history=[];A.history.unshift(item);if(A.history.length>30)A.history.pop();save();document.getElementById('hnotif').classList.add('show');}
+function clearHist(){if(!confirm('Hapus semua riwayat?'))return;A.history=[];save();renderHist();showToast('🗑 Riwayat dihapus');}
+function renderHist(){
+  const list=document.getElementById('hlist');const cnt=document.getElementById('hcnt');
+  if(!A.history||!A.history.length){cnt.textContent='0 analisis';list.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--t4)"><div style="font-size:40px;margin-bottom:10px">📋</div><div style="font-size:14px;font-weight:600;color:var(--t3)">Belum ada riwayat</div></div>';return;}
+  cnt.textContent=A.history.length+' analisis tersimpan';
+  list.innerHTML=A.history.map((h,i)=>{const b64=h.shareText?enc(h.shareText):'';return`<div class="hi" onclick="togH(${i})"><div class="hi-row"><div class="hi-ico">${h.icon||'💬'}</div><div class="hi-b"><div class="hi-t">${esc(h.title)}</div><div class="hi-m"><span class="hi-tm">${fmtD(h.date)}</span><span class="hi-md hm-${h.model==='claude'?'c':'g'}">${h.model==='claude'?'🔵 Claude':'🟢 Gemini'}</span></div><div class="hi-pv">${esc(h.preview||'')}</div></div></div><div class="hi-exp" id="he-${i}">${b64?`<div style="font-size:12px;line-height:1.7;color:var(--t2);white-space:pre-wrap;background:var(--sf);border-radius:var(--r8);padding:10px;border:1px solid var(--bd);max-height:200px;overflow-y:auto">${esc(h.shareText||'')}</div><div class="hi-sh"><button class="sbtn sb-w" onclick="event.stopPropagation();waS('${b64}')">📤 WhatsApp</button><button class="sbtn sb-c" onclick="event.stopPropagation();cpS('${b64}')">📋 Salin</button></div>`:'<div style="font-size:12px;color:var(--t3)">Detail tidak tersedia</div>'}</div></div>`;}).join('');
+}
+function togH(i){const el=document.getElementById('he-'+i);el.classList.toggle('open');}
+function fmtD(iso){try{return new Date(iso).toLocaleDateString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}catch{return iso;}}
+
+/* ── SHARE ───────────────────────────── */
+function buildST(d,q){
+  const j=d.jenis_hukum||{},h=d.hak_anda||{},l=d.langkah_nyata||[];
+  let t=`⚖️ *TanyaHukum — Informasi Hukum*\n\n`;
+  if(q)t+=`📌 *Pertanyaan:* ${q}\n\n`;
+  t+=`📋 *Kategori:* ${j.kategori||'-'}\n`;
+  if(j.ringkasan_kasus)t+=`📍 ${j.ringkasan_kasus}\n`;
+  if(j.pasal_berlaku?.length){t+=`\n⚖️ *Regulasi Terkait:*\n`;j.pasal_berlaku.forEach(p=>{t+=`• ${p.kode} — ${p.nama_uu}\n`;});}
+  if(h.poin_hak?.length){t+=`\n🛡️ *Hak Anda:*\n`;h.poin_hak.forEach(p=>{t+=`✓ ${p.hak}\n`;});}
+  if(l.length){t+=`\n🚶 *Langkah Nyata:*\n`;l.forEach(s=>{t+=`${s.nomor}. *${s.judul}*\n   ${s.detail}\n`;if(s.waktu)t+=`   ⏰ ${s.waktu}\n`;});}
+  if(d.peringatan)t+=`\n⚠️ ${d.peringatan}\n`;
+  t+=`\n—\n⚠️ Informasi edukatif dari TanyaHukum. Bukan nasihat hukum resmi.\nUntuk kasus serius, hubungi Advokat PERADI atau LBH.`;
+  return t;
+}
+function enc(t){try{return btoa(unescape(encodeURIComponent(t))).replace(/'/g,"\\'");}catch{return '';}}
+function dec(t){try{return decodeURIComponent(escape(atob(t)));}catch{return t;}}
+function waS(b64){window.open('https://wa.me/?text='+encodeURIComponent(dec(b64)),'_blank');}
+function cpS(b64){navigator.clipboard.writeText(dec(b64)).then(()=>showToast('✅ Berhasil disalin!'));}
+
+/* ── UTILS ───────────────────────────── */
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function parseJ(raw){const c=(raw||'').replace(/```json|```/g,'').trim();try{return JSON.parse(c);}catch{const m=c.match(/\{[\s\S]*\}/);if(m)return JSON.parse(m[0]);throw new Error('Format respons tidak valid. Coba lagi.');}}
+let toastT;
+function showToast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3200);}
+
+/* ── BOOT ────────────────────────────── */
+load();
+if(A.name){
+  document.getElementById('scr-login').classList.remove('active');
+  document.getElementById('scr-main').classList.add('active');
+  if(!A.seenDisc)showDisc();
+  initUI();
+  renderTplGrid('semua');
+} else {
+  // Pre-select plan display
+  document.getElementById('po-f').classList.add('sf');
+}
+</script>
+</body>
+</html>
